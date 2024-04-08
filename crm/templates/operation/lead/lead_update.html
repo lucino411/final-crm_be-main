@@ -1,0 +1,244 @@
+{% extends "administration/core/base.html" %}
+
+{% block title %} {{ titulo }} {% endblock %}
+
+{% block content %}
+
+<div class="container rounded shadow-sm bg-light border border-2 p-5 my-4" >
+
+    <form action="." method="post" class="">
+        {% csrf_token %}
+        <div class="row mb-3">
+            <div class="col-md-9">
+                <label for="id_lead_name" class="form-label">Lead Nombre</label>
+                {{ form.lead_name }}
+            </div>
+            <!-- Campo de Lead Source -->
+            <div class="col-md-3">
+                <label for="id_lead_source" class="form-label">Lead Source</label>
+                {{ form.lead_source }}
+            </div>
+        </div>
+
+
+        <div class="row mb-3">
+            <div class="col-md-5">
+                <label for="id_first_name" class="form-label">Nombre</label>
+                {{ form.first_name }}
+            </div>
+            <div class="col-md-4">
+                <label for="id_last_name" class="form-label">Apellido</label>
+                {{ form.last_name }}
+            </div>
+            <!-- Campo de Title -->
+            <div class="col-md-3">
+                <label for="id_title" class="form-label">Title</label>
+                {{ form.title }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-8">
+                <label for="addLeadUnregisterEmail" class="form-label">Email</label>
+                {{ form.primary_email }}
+                {% if form.errors.primary_email %}
+                    <div class="text-danger">{{ form.errors.primary_email }}</div>
+                {% endif %}
+            </div>     
+        </div>
+
+        <!-- Campos de Phone y Mobile Phone -->
+        <div class="row mb-3">
+            <div class="col-md-5">
+                <label for="id_phone" class="form-label">Phone</label>
+                {{ form.phone }}
+            </div>
+            <div class="col-md-5">
+                <label for="id_mobile_phone" class="form-label">Mobile Phone</label>
+                {{ form.mobile_phone }}
+            </div>
+        </div>
+
+        <!-- Campo de Company Name -->
+        <div class="row mb-3">
+            <div class="col-md-8">
+                <label for="id_company_name" class="form-label">Company Name</label>
+                {{ form.company_name }}
+            </div>
+            <div class="col-md-2">
+                <label for="id_industry" class="form-label">Industry</label>
+                {{ form.industry }}
+            </div> 
+        </div>
+
+        <!-- Campo de Company Email -->
+        <div class="row mb-3">
+            <div class="col-md-7">
+                <label for="id_company_email" class="form-label">Company Email</label>
+                {{ form.company_email }}
+            </div>
+            <div class="col-md-3">
+                <label for="id_company_phone" class="form-label">Company Phone</label>
+                {{ form.company_phone }}
+            </div>
+        </div>
+
+        <!-- Campo de Website -->
+        <div class="row mb-3">
+            <div class="col-md-8">
+                <label for="id_website" class="form-label">Website</label>
+                {{ form.website }}
+                {% if form.errors.website %}
+                    <div class="text-danger">{{ form.errors.website }}</div>
+                {% endif %}
+            </div>
+        </div> 
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="id_country" class="form-label">Country</label>
+                {{ form.country }}
+            </div>
+            <div class="col-md-2">
+                <label for="id_currency" class="form-label">Currency</label>
+                {{ form.currency }}
+            </div>  
+        </div>
+
+
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label for="id_description" class="form-label">Description</label>
+                {{ form.description }}
+            </div>
+        </div>    
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="id_start_date_time" class="form-label">Start Date</label>
+                {{ form.start_date_time }}
+            </div>
+            <div class="col-md-4">
+                <label for="id_end_date_time" class="form-label">End Date</label>
+                {{ form.end_date_time }}
+            </div>
+            <div class="col-md-4" {% if hide_extended_end_date_time %}style="display:none;" {% endif %}>
+                <label for="id_extended_end_date_time" class="form-label">Extended End Date</label>
+                {{ form.extended_end_date_time }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-5">
+                <label for="id_assigned_to" class="form-label">Assigned to</label>
+                {{ form.assigned_to }}
+            </div>
+        </div>
+        
+        <div class="row mb-3">
+            {{ formset.management_form }}
+            <div id="form-list" class="col-md-5 alert alert-secondary" role="alert">
+                {% for form in formset %}
+                    <div class="deal-product-form">{{ form.as_p }}</div>
+                {% endfor %}
+                <button type="button" id="add-more-product" class="btn btn-primary" {% if not enable_button %}disabled{% endif %} {% if not enable_button %}onclick="return false;"{% endif %}>Add Product</button> {# Botón para añadir más formularios #}
+            </div>
+        </div>
+
+        <!-- LeadProductForm oculto para crear uno nuevo con JS -->
+        <span id="lead-info" data-stage="{{ lead.stage }}" data-is-closed="{{ lead.is_closed }}" style="display: none;"></span>
+        <span id="form-index" data-form-index="{{ formset.total_form_count }}" style="display: none;"></span>
+        <div id="form-template" style="display: none;">
+            {{ formset.empty_form.as_p }}
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-md-5 alert bg-success-subtle" role="alert">
+                <label for="formGroupExampleInput2" class="form-label">Stage</label>
+                {{ form.stage }}
+            </div>
+        </div>
+
+        <br>
+                       
+        <div class="row my-5">
+            <div class="btn-group">
+                <button type="button" onclick="window.history.back();" class="btn btn-secondary">Return</button> 
+                {% if lead %}
+                    <a href="{% url 'lead:task-create' lead_pk=lead.id organization_slug=organization_slug %}" id="add-more-task"
+                    class="btn btn-warning {% if not enable_button %}disabled{% endif %}" {% if not enable_button %}onclick="return false;" {% endif %}>Agregar Task</a>
+                {% endif %}
+                <button id="updateLeadFormButton" type="submit" class="btn btn-primary" {% if not enable_update %}disabled{% endif %} {% if not enable_update %}onclick="return false;"{% endif %}>Update</button>
+            </div>
+        </div>
+    </form>
+
+
+
+</div>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+    // Oculta botones segun el stage del Lead
+    document.addEventListener('DOMContentLoaded', function () {
+        var formIndex = document.getElementById('form-index').getAttribute('data-form-index');
+        const addMoreProductButton = document.getElementById('add-more-product');
+        const addMoreTaskButton = document.getElementById('add-more-task');
+        const convertLeadToDealButton = document.getElementById('ConvertLeadToDeal');
+        const updateFormButton = document.getElementById('updateLeadFormButton');
+        const formListContainer = document.getElementById('form-list');
+        const formTemplate = document.getElementById('form-template').innerHTML;
+
+        // Leer los datos de stage y is_closed
+        const leadInfo = document.getElementById('lead-info');
+        const leadStage = leadInfo.getAttribute('data-stage');
+        const leadIsClosed = leadInfo.getAttribute('data-is-closed') === 'True';
+
+        // Ocultar el botón si el lead está cerrado o si el stage es 'close_win' o 'close_lost'
+        if (leadIsClosed || leadStage === 'close_lost') {
+            addMoreProductButton.style.display = 'none';
+            addMoreTaskButton.style.display = 'none';
+            convertLeadToDealButton.style.display = 'none';
+            updateFormButton.style.display = 'none';
+
+        } else {
+            addMoreProductButton.addEventListener('click', function () {
+            let newFormHtml = formTemplate.replace(/__prefix__/g, formIndex);
+            formListContainer.insertAdjacentHTML('beforeend', newFormHtml);
+
+            // Oculta o elimina el checkbox de eliminación en el nuevo formulario
+            const newForm = formListContainer.lastElementChild;
+            const deleteCheckbox = newForm.querySelector('input[type="checkbox"][name$="DELETE"]');
+            const deleteLabel = deleteCheckbox ? deleteCheckbox.previousElementSibling : null;
+            if (deleteCheckbox && deleteLabel) {
+                    deleteCheckbox.style.display = 'none';
+                    deleteLabel.style.display = 'none';
+                }
+
+                document.getElementById('id_lead_product-TOTAL_FORMS').value = ++formIndex;
+            });
+        }
+    });
+</script>
+
+
+
+<script>
+    // Encuentra todas las casillas de verificación de eliminación de producto y cambia el texto de la etiqueta
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('#form-list input[type="checkbox"][name$="DELETE"]').forEach(function (deleteCheckbox) {
+            var deleteLabel = deleteCheckbox.previousElementSibling;
+            if (deleteLabel) {
+                deleteLabel.textContent = 'Delete Product';
+            }
+        });
+    });
+</script>
+
+    
+{% endblock %}

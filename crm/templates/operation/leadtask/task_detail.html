@@ -1,0 +1,52 @@
+{% extends "administration/core/base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+
+<div class="card" style="width: 22rem;">
+    <div class="card-header">
+        <h2> <a href="{% url 'lead:detail' pk=task.lead.id organization_slug=organization_slug %}">{{ task.lead }} - lead id: {{ task.lead.id }}</a></h2>
+    </div>
+    <ul class="list-group list-group-flush">
+        <span class="badge bg-secondary">Assigned to</span>
+        <li class="list-group-item">{{ task.assigned_to }} </li>
+        <span class="badge bg-secondary">Created By</span>
+        <li class="list-group-item">{{ task.created_by }} </li>
+        <span class="badge bg-secondary">Created At</span>
+        <li class="list-group-item">{{ task.created_time }} </li>
+        {% if task_product %}
+        <span class="badge bg-secondary">Producto</span>
+            <li class="list-group-item">{{ task_product }}</li>            
+        {% else %}
+            <li class="list-group-item">No products associated with this task.</li>
+        {% endif %}    
+        <span class="badge bg-success">Stage</span>     
+        <li class="list-group-item">{{ task.stage }}   </li> 
+        
+        {% if subtasks %}
+            <span class="badge bg-info">SubTareas</span>
+            {% for subtask in subtasks %}
+            <li class="list-group-item">
+                <a href="{% url 'lead:task-detail' pk=subtask.pk organization_slug=organization_slug %}">{{ subtask.name }}</a>
+            </li>
+            {% endfor %}
+        {% elif parent_task %}
+            <span class="badge bg-warning">Parent Task</span>
+            <li class="list-group-item">
+                <a href="{% url 'lead:task-detail' pk=parent_task.pk organization_slug=organization_slug %}">{{ parent_task.name }}</a>
+            </li>
+        {% endif %}
+
+    </ul>
+</div>
+<div>
+    <a href="{% url 'lead:task-update' pk=task.pk organization_slug=organization_slug %}" class="btn btn-primary">Update</a>
+    <a href="{% url 'lead:task-delete' pk=task.pk organization_slug=organization_slug %}" class="btn btn-danger mt-3">Delete</a>
+</div>
+<div class="col-md-8 mt-3">
+
+</div>
+                
+
+{% endblock %}

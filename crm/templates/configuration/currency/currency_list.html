@@ -1,0 +1,24 @@
+{% extends "administration/core/base.html" %}
+{% load static %}
+
+{% block title %}Countries{% endblock %}
+
+{% block content %}
+
+    <div class="container rounded shadow-sm bg-light border border-2 p-5 my-4" style="width: 30%;">
+        <ul class="list-group list-group-flush settings-items-link">            
+            {% for currency in currencies %}
+                <li class="list-group-item bg-transparent">
+                    <a href="{% url 'currency:update' pk=currency.pk organization_slug=organization_slug  %}">{{ currency.code }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+                
+        <div class="row my-4">
+            <div class="btn-group">
+                <a href="{% url 'currency:create' organization_slug=organization_slug %}" class="btn btn-primary">Create</a> 
+            </div>
+        </div>    
+    </div>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "administration/core/base.html" %}
+{% load static %}
+
+{% block title %}Countries{% endblock %}
+
+{% block content %}
+
+    <div class="container rounded shadow-sm bg-light border border-2 p-5 my-4" style="width: 30%;">
+        <ul class="list-group list-group-flush settings-items-link">            
+            {% for country in countries %}
+                <li class="list-group-item bg-transparent">
+                    <div class="{% if not country.is_selected %}not-selected{% endif %}">
+                        <a href="{% url 'country:update' pk=country.pk organization_slug=organization_slug  %}">{{ country.name }}</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+                
+        <div class="row my-4">
+            <div class="btn-group">
+                <a href="{% url 'country:create' organization_slug=organization_slug %}" class="btn btn-primary">Create</a> 
+            </div>
+        </div>    
+    </div>
+
+{% endblock %}

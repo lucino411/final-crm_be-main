@@ -1,0 +1,85 @@
+{% extends "administration/core/base.html" %}
+{% load static %}
+
+{% block title %} {{ titulo }} {% endblock %}
+
+
+{% block content %}
+
+<div class="container rounded shadow-sm bg-light border border-2 p-5 my-4" style="width: 40%;">
+
+    <form action="." method="post" enctype="multipart/form-data" class="row g-3">
+        {% csrf_token %}
+        <div class="row mb-3">
+            <div class="col-12">
+                <label for="formGroupExampleInput2" class="form-label">Task Nombre</label>
+                {{ form.name }}
+            </div>
+        </div>
+        <div class="row mb-3">
+
+            <div class="col-md-5">
+                <label for="formGroupExampleInput2" class="form-label">Product</label>
+                {{ form.lead_product }}
+            </div>
+        </div>
+        {% if form.parent_task %}               
+            <div class="row mb-3">
+                <div class="col-12">            
+                    <label for="formGroupExampleInput2" class="form-label">Parent Task</label>
+                    {{ form.parent_task }}
+                    <input type="hidden" name="parent_task_id" value="{{ request.GET.parent_task }}"> <!-- Captura parent_task enviado por la URL desde LeadTaskUpdateView -->
+                </div>
+            </div>
+        {% endif %}
+
+
+        <div class="row mb-3">
+            <div class="col-8">
+                <label for="formGroupExampleInput2" class="form-label">Assigned to</label>
+                {{ form.assigned_to }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12">
+                <label for="formGroupExampleInput2" class="form-label">Description</label>
+                {{ form.description }}
+            </div>
+        </div>
+
+        <div class="row my-4">
+            <div class="btn-group">
+                <button type="button" onclick="window.history.back();" class="btn btn-secondary">Return</button> 
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#id_related_task').change(function() {
+            adjustParentTaskOptions();
+        });
+
+        function adjustParentTaskOptions() {
+            var selectedRelatedTask = $('#id_related_task').val();
+            $('#id_parent_task option').each(function() {
+                if ($(this).val() === selectedRelatedTask) {
+                    $(this).hide(); // Oculta la opción que coincide
+                } else {
+                    $(this).show(); // Muestra las otras opciones
+                }
+            });
+        }
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "administration/core/base.html" %}
+
+{% block title %}currencies{% endblock %}
+
+{% block content %}
+
+<h1 class="text-xl">{{ category.name }} <span class="badge bg-secondary">Category</span></h1>
+<p>{{ category.url }} <span class="badge bg-secondary">URL</span></p>
+<br><br>
+
+<div class="row mb-3">
+    <div class="col-md-8">
+        <a href="{% url 'product:category-update' pk=category.pk organization_slug=organization_slug %}" class="btn btn-primary">Update</a>
+        <a href="{% url 'product:category-delete' pk=category.pk organization_slug=organization_slug %}" class="btn btn-danger">Delete</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+{% endblock %}

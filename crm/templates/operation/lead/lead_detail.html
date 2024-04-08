@@ -1,0 +1,45 @@
+{% extends "administration/core/base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+
+<div class="card" style="width: 42rem;">
+    <div class="card-header">
+        <h2>{{ lead.lead_name }}</h2>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">{{ lead.lead_source }} <span class="badge bg-secondary">Lead Source</span></li>
+        <li class="list-group-item">{{ lead.first_name }} {{ lead.last_name }}</li>
+        <li class="list-group-item">{{ lead.primary_email }}  
+        <li class="list-group-item">{{ lead.website }} <span class="badge bg-secondary">Webpage</span></li>
+        <li class="list-group-item">{{ lead.phone }} <span class="badge bg-secondary">Phone</span></li>
+        <li class="list-group-item">{{ lead.mobile_phone }} <span class="badge bg-secondary">Cellphone</span></li>
+        <li class="list-group-item">{{ lead.country }} <span class="badge bg-secondary">Country</span></li>
+        <li class="list-group-item">{{ lead.assigned_to }} <span class="badge bg-secondary">Assigned to</span></li>
+        <li class="list-group-item">{{ lead.created_by }} <span class="badge bg-secondary">Created By</span></li>
+        <li class="list-group-item">{{ lead.created_time }} <span class="badge bg-secondary">Created</span></li>
+        <li class="list-group-item">{{ lead.start_date_time }} <span class="badge bg-secondary">Start</span></li>
+        <li class="list-group-item">{{ lead.end_date_time }} <span class="badge bg-secondary">End</span></li>
+        <li class="list-group-item">{{ lead.extended_end_date_time }} <span class="badge bg-info">Extended End</span></li>        
+        {% for lead_product in lead_products %}
+            <li class="list-group-item">Product: {{ lead_product.product.name }} - Category: {{ lead_product.product.category.name }} - Product URL: {{ lead_product.product.url }} - Cotización URL: {{ lead_product.cotizacion_url }}</li>
+        {% empty %}
+            <li class="list-group-item">No products associated with this lead.</li>
+        {% endfor %}
+            
+        {% for lead_task in lead_tasks %}
+            <li class="list-group-item"> Tareas: <a href="{% url 'lead:task-detail' pk=lead_task.id organization_slug=organization_slug %}">{{ lead_task.name }}</a> </li>  
+        {% empty %}
+            <li class="list-group-item">No tasks associated with this lead.</li>
+        {% endfor %}
+        <li class="list-group-item">{{ lead.stage }}   <span class="badge bg-success">Stage</span></li>
+    </ul>
+</div>
+<div class="col-md-8 mt-3">
+    <a href="{% url 'lead:update' pk=lead.pk organization_slug=organization_slug %}" class="btn btn-primary">Update</a>
+    <a href="{% url 'lead:delete' pk=lead.pk organization_slug=organization_slug %}" class="btn btn-danger">Delete</a>
+</div>
+                
+
+{% endblock %}

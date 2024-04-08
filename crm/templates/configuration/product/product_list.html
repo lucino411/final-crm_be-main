@@ -1,0 +1,27 @@
+{% extends "administration/core/base.html" %}
+{% load static %}
+
+{% block title %}Countries{% endblock %}
+
+{% block content %}
+
+    <div class="container rounded shadow-sm bg-light border border-2 p-5 my-4" style="width: 40%;">
+        <ul class="list-group list-group-flush settings-items-link">            
+            {% for product in products %}
+                <li class="list-group-item bg-transparent">
+                    <p><strong>Name:</strong>&nbsp;&nbsp;<a href="{% url 'product:update' pk=product.pk organization_slug=organization_slug  %}">{{ product.name }}</a></p>
+                    <p><strong>Category:</strong>&nbsp;&nbsp;{{ product.category }}</p>     
+                    <p><strong>URL:</strong>&nbsp;&nbsp;<a href="{{ product.product_url }}" target="_blank">{{ product.product_url }}</a></p>                
+        
+                </li>
+            {% endfor %}
+        </ul>
+                
+        <div class="row my-4">
+            <div class="btn-group">
+                <a href="{% url 'product:create' organization_slug=organization_slug %}" class="btn btn-primary">Create</a> 
+            </div>
+        </div>    
+    </div>
+
+{% endblock %}
