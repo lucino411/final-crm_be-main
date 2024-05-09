@@ -1,5 +1,6 @@
-crm_be
+crm_be-main
 ├─ crm
+│  ├─ .env
 │  ├─ administration
 │  │  ├─ core
 │  │  │  ├─ admin.py
@@ -17,6 +18,7 @@ crm_be
 │  │  │  ├─ models.py
 │  │  │  ├─ tests.py
 │  │  │  ├─ urls.py
+│  │  │  ├─ utils.py
 │  │  │  └─ views.py
 │  │  └─ userprofile
 │  │     ├─ admin.py
@@ -53,9 +55,12 @@ crm_be
 │  ├─ media
 │  │  └─ organizations
 │  │     └─ 1
+│  │        ├─ 2023-12-30_21-14.png
 │  │        ├─ 2023-12-30_21-21.png
 │  │        ├─ Pieter_the_older_Bruegel.jpeg
+│  │        ├─ Rose-Namajunas-1024x576.webp
 │  │        ├─ Schubert-Klimt.jpg
+│  │        ├─ amy_adams.jpeg
 │  │        └─ written_down.png
 │  ├─ operation
 │  │  ├─ client
@@ -82,6 +87,7 @@ crm_be
 │  │  ├─ dashboard
 │  │  │  ├─ admin.py
 │  │  │  ├─ apps.py
+│  │  │  ├─ forms.py
 │  │  │  ├─ models.py
 │  │  │  ├─ tests.py
 │  │  │  ├─ urls.py
@@ -89,23 +95,32 @@ crm_be
 │  │  ├─ deal
 │  │  │  ├─ admin.py
 │  │  │  ├─ apps.py
+│  │  │  ├─ context_processors.py
 │  │  │  ├─ forms.py
 │  │  │  ├─ models.py
 │  │  │  ├─ signals.py
 │  │  │  ├─ tests.py
+│  │  │  ├─ urls copy.py
 │  │  │  ├─ urls.py
+│  │  │  ├─ utils.py
+│  │  │  ├─ views copy.py
 │  │  │  └─ views.py
 │  │  └─ lead
 │  │     ├─ admin.py
 │  │     ├─ apps.py
+│  │     ├─ context_processors.py
 │  │     ├─ forms.py
 │  │     ├─ models.py
 │  │     ├─ signals.py
 │  │     ├─ tests.py
 │  │     ├─ urls.py
+│  │     ├─ utils.py
 │  │     └─ views.py
 │  ├─ project
+│  │  ├─ .env
+│  │  ├─ .template.env
 │  │  ├─ asgi.py
+│  │  ├─ settings copy.py
 │  │  ├─ settings.py
 │  │  └─ urls.py
 │  ├─ static
@@ -120,6 +135,7 @@ crm_be
 │  │     ├─ be_crm_company_datatable.js
 │  │     ├─ be_crm_contact_datatable.js
 │  │     ├─ be_crm_datatable copy.js
+│  │     ├─ be_crm_deals_datatable copy.js
 │  │     ├─ be_crm_deals_datatable.js
 │  │     ├─ be_crm_dealtask_datatable.js
 │  │     ├─ be_crm_leads_datatable.js
@@ -137,6 +153,7 @@ crm_be
 │     │     └─ upload_media.html
 │     ├─ configuration
 │     │  ├─ country
+│     │  │  ├─ country_create copy.html
 │     │  │  ├─ country_create.html
 │     │  │  ├─ country_delete.html
 │     │  │  ├─ country_detail.html
@@ -173,13 +190,18 @@ crm_be
 │     │  │  ├─ contact_list.html
 │     │  │  └─ contact_update.html
 │     │  ├─ dashboard
+│     │  │  ├─ dashboard_home copy.html
 │     │  │  └─ dashboard_home.html
 │     │  ├─ deal
 │     │  │  ├─ deal_create.html
 │     │  │  ├─ deal_delete.html
+│     │  │  ├─ deal_detail copy.html
 │     │  │  ├─ deal_detail.html
 │     │  │  ├─ deal_list.html
-│     │  │  └─ deal_update.html
+│     │  │  ├─ deal_update.html
+│     │  │  └─ includes
+│     │  │     ├─ deal_statistics.html
+│     │  │     └─ deal_task_statistics.html
 │     │  ├─ dealtask
 │     │  │  ├─ task_create.html
 │     │  │  ├─ task_delete.html
@@ -187,6 +209,9 @@ crm_be
 │     │  │  ├─ task_list.html
 │     │  │  └─ task_update.html
 │     │  ├─ lead
+│     │  │  ├─ includes
+│     │  │  │  ├─ lead_statistics.html
+│     │  │  │  └─ lead_task_statistics.html
 │     │  │  ├─ lead_create.html
 │     │  │  ├─ lead_delete.html
 │     │  │  ├─ lead_detail.html
